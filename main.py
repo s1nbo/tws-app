@@ -4,7 +4,8 @@ from ibapi.contract import Contract
 
 import threading
 import pandas as pd
-
+import matplotlib.pyplot as plt
+import time
 
 
 class TradingApp(EWrapper, EClient):
@@ -14,8 +15,8 @@ class TradingApp(EWrapper, EClient):
         self.data: dict[int, pd.DataFrame] = {}
 
 
+    # Override historicalData method to be used by gethistoricalData
     def historicalData(self, reqId, bar):
-        # This method is called repeatedly, once per bar
         if reqId not in self.data:
             self.data[reqId] = pd.DataFrame(columns=[
                 'date', 'open', 'high', 'low', 'close', 'volume'
@@ -32,10 +33,11 @@ class TradingApp(EWrapper, EClient):
                 'volume': bar.volume
             }])
         ], ignore_index=True)
+        print(f"Received bar for reqId {reqId}: {bar.date} {bar.close}")
 
     def historicalDataEnd(self, reqId, start, end):
         print(f"Historical data for reqId {reqId} ended: {start} -> {end}")
-        print(self.data[reqId].tail())  # for quick check
+        print(self.data[reqId])  # for quick check
 
 
 
@@ -49,23 +51,29 @@ threading.Thread(target=app.run, daemon=True).start()
 print("Connected:", app.isConnected())
 
 # define contract
-nvda = Contract()
-nvda.symbol = "NVDA"
-nvda.secType = "STK"
-nvda.exchange = "SMART"
-nvda.currency = "USD"
+stock = Contract()
+stock.symbol = "HOOD"
+stock.secType = "STK"
+stock.exchange = "SMART"
+stock.currency = "USD"
 
-# request historical data for NVDA
+# request historical data for stock
 reqId = 1
 app.reqHistoricalData(
     reqId=reqId,
-    contract=nvda,
-    endDateTime='',
-    durationStr='1 D',
-    barSizeSetting='1 min',
+    contract=stock,
+    endDateTime='20251114 16:00:00',
+    durationStr='1 Y',
+    barSizeSetting='1 week',
     whatToShow='TRADES',
     useRTH=1,
     formatDate=1,
     keepUpToDate=False,
     chartOptions=[]
 )
+
+time.sleep(2)
+
+app.data[reqId].set_index('date')['close'].plot(title='NVDA Historical Close Prices')
+
+plt.show()
