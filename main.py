@@ -45,7 +45,7 @@ class TradingApp(EWrapper, EClient):
     def updateAccountValue(self, key, val, currency, accountName):
         print(f"Account Value. Key: {key}, Value: {val}, Currency: {currency}, Account Name: {accountName}")
 
-        if key 'TotalCashBalance':
+        if key == 'TotalCashBalance':
             print(f"Total Cash Balance: {val} {currency}")
  
 
@@ -79,6 +79,6 @@ app.reqHistoricalData(
 
 time.sleep(2)
 
-app.data[reqId].set_index('date')['close'].plot(title='NVDA Historical Close Prices')
+app.data[reqId].set_index('date')['close'].plot(title='HOOD Historical Close Prices')
 
 plt.show()
