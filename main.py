@@ -14,6 +14,9 @@ class TradingApp(EWrapper, EClient):
 
         self.data: dict[int, pd.DataFrame] = {}
 
+        self.account_balance = 0.0
+        self.accoutn_equity = 0.0
+
 
     # Override historicalData method to be used by gethistoricalData
     def historicalData(self, reqId, bar):
@@ -38,19 +41,21 @@ class TradingApp(EWrapper, EClient):
     def historicalDataEnd(self, reqId, start, end):
         print(f"Historical data for reqId {reqId} ended: {start} -> {end}")
         print(self.data[reqId])  # for quick check
+    
+    def updateAccountValue(self, key, val, currency, accountName):
+        print(f"Account Value. Key: {key}, Value: {val}, Currency: {currency}, Account Name: {accountName}")
+
+        if key 'TotalCashBalance':
+            print(f"Total Cash Balance: {val} {currency}")
+ 
 
 
-
-
+# Trading App
 app = TradingApp()
 app.connect('127.0.0.1', 7497, clientId=0)
-
-# start the network loop
 threading.Thread(target=app.run, daemon=True).start()
 
-print("Connected:", app.isConnected())
-
-# define contract
+# Market Data 
 stock = Contract()
 stock.symbol = "HOOD"
 stock.secType = "STK"
