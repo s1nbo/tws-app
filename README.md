@@ -1,6 +1,7 @@
 # tws-app
-Interactive Brokers and Trader Workstation API access
+Interactive Brokers and Trader Workstation API access.
 
+No finacial advice is provided or implied. Use at your own risk.
 
 # Run Code
 
@@ -9,8 +10,11 @@ Interactive Brokers and Trader Workstation API access
 3. Virtual Environment Setup:
    ```bash
    python -m venv venv
-   source venv/bin/activate  
    ```
+   ```bash
+   source venv/bin/activate
+   ```
+   
 4. Install Required Packages:
    ```bash
    pip install -r requierements.txt
